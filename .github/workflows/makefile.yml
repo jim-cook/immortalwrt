@@ -1,0 +1,33 @@
+name: Makefile CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: configure
+      run: ./configure
+
+    - name: update
+      run: ./scripts/feeds update -a
+
+    - name: install
+      run: ./scripts/feeds install -a
+
+    - name: Install dependencies
+      run: make menuconfig
+
+    - name: Run download
+      run: make download
+
+    - name: Run make
+      run: make 
